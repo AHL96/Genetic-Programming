@@ -3,19 +3,18 @@ class Car {
     this.loc = locationVector;
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
-
     this.angle = 0;
-    this.aVel = 0;
-    this.aAcc = 0;
-
     this.topSpeed = 5;
 
     this.dna = new DNA(mutationRate, dnaLength);
+    this.geneCounter = 0;
   }
 
   run() {
+    this.applyForce(this.dna.genes[this.geneCounter % this.dna.genes.length]);
     this.update();
     this.display();
+    this.geneCounter++;
   }
 
   update() {

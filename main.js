@@ -2,10 +2,10 @@ let car;
 let friction;
 
 function setup() {
-  createCanvas(600, 400);
+  let w = document.body.offsetWidth;
+  let h = document.body.offsetHeight;
+  createCanvas(w, h);
   car = new Car(createVector(width / 2, height / 2));
-
-  car.applyForce(createVector(-2, 1));
 }
 
 function draw() {
