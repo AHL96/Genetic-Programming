@@ -1,5 +1,5 @@
 class DNA {
-  constructor(dnaLength = 100) {
+  constructor(dnaLength = 1000) {
     this.genes = [];
     for (var i = 0; i < dnaLength; i++) {
       this.genes.push(p5.Vector.random2D());
