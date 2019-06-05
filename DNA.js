@@ -1,18 +1,30 @@
 class DNA {
-  constructor(mutationRate = 0.01, dnaLength = 100) {
+  constructor(dnaLength = 100) {
     this.genes = [];
     for (var i = 0; i < dnaLength; i++) {
       this.genes.push(p5.Vector.random2D());
     }
-    this.mutationRate = mutationRate;
   }
 
-  crossover(DNA1, DNA2) {
-    let newDNA = new DNA();
-    for (var i = 0; i < newDNA.length; i++) {
-      newDNA[i];
+  crossover(otherDNA) {
+    let newDNA = new DNA(this.genes.length);
+    for (var i = 0; i < this.genes.length; i++) {
+      let n = random(1);
+      if (n > 0.5) {
+        newDNA.genes[i] = this.genes[i];
+      } else {
+        newDNA.genes[i] = otherDNA.genes[i];
+      }
+    }
+    return newDNA;
+  }
+
+  mutate(mutationRate = 0.01) {
+    for (var i = 0; i < this.genes.length; i++) {
+      let n = random(1);
+      if (n < mutationRate) {
+        this.genes[i] = p5.Vector.random2D();
+      }
     }
   }
-
-  mutate() {}
 }
