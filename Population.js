@@ -1,11 +1,11 @@
 class Population {
   constructor(size = 100) {
     this.population = [];
-    this.dnaLength = 100;
+    this.dnaLength = 500;
     this.size = size;
     for (var i = 0; i < size; i++) {
       this.population.push(
-        new Car(createVector(width / 2, height / 2), new DNA())
+        new Car(createVector(25, height / 2), new DNA())
       );
     }
 
@@ -54,7 +54,7 @@ class Population {
 
       let newDNA = parentA.crossover(parentB);
       newDNA.mutate();
-      let childCar = new Car(createVector(width / 2, height / 2), newDNA);
+      let childCar = new Car(createVector(25, height / 2), newDNA);
       this.population[i] = childCar;
     }
   }

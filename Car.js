@@ -17,7 +17,7 @@ class Car {
     let d = p5.Vector.sub(target.loc, this.loc);
     d = d.mag();
     this.fitness = 1 / d;
-    this.fitness = pow(this.fitness, 2);
+    this.fitness = pow(this.fitness, 4);
     return this.fitness;
   }
 
@@ -40,12 +40,6 @@ class Car {
     this.vel.limit(this.topSpeed);
     this.loc.add(this.vel);
     this.acc.mult(0);
-
-    // let desired = this.dna.genes[
-    //   (this.geneCounter + 1) % this.dna.genes.length
-    // ];
-    // let steer = p5.Vector.sub(desired, this.vel);
-    // this.applyForce(steer);
 
     this.angle = this.vel.heading();
   }
