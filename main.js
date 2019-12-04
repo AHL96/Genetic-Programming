@@ -9,18 +9,10 @@ const width = window.innerWidth
 const height = window.innerHeight
 const GENOME_LENGTH = 500
 
-const world = World.create({
-    gravity: {
-        y: 0
-    },
-    bounds: {
-        min: { x: 0, y: 0 },
-        max: { x: width, y: height }
-    }
-})
-
 const engine = Engine.create();
-engine.world = world
+engine.world.gravity.y = 0;
+const world = engine.world;
+
 const target = Bodies.circle(width * .9, height * .9, 10, {
     isStatic: true
 });
