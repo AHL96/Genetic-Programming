@@ -30,7 +30,7 @@ class Population {
     }
 
     run() {
-        if (this.cycle < 200) {
+        if (this.cycle < GENOME_LENGTH) {
             for (let c of this.creatures) {
                 c.run();
             }

@@ -1,7 +1,7 @@
 class Creature extends Matter.Bodies.rectangle {
     constructor(world) {
         super(
-            window.innerWidth * .5, window.innerHeight * .9,
+            window.innerWidth * .1, window.innerHeight * .1,
             10, 10,
             {
                 isSensor: true,

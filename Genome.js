@@ -1,5 +1,5 @@
 class Genome {
-    constructor(size = 200) {
+    constructor(size = GENOME_LENGTH) {
         this.sequence = []
         for (let i = 0; i < size; i++) {
             this.sequence.push(this.randomGene());

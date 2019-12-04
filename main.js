@@ -5,18 +5,39 @@ const Engine = Matter.Engine,
     Vector = Matter.Vector,
     Events = Matter.Events;
 
+const width = window.innerWidth
+const height = window.innerHeight
+const GENOME_LENGTH = 500
+
+const world = World.create({
+    gravity: {
+        y: 0
+    },
+    bounds: {
+        min: { x: 0, y: 0 },
+        max: { x: width, y: height }
+    }
+})
+
 const engine = Engine.create();
-const world = engine.world;
-const target = Bodies.circle(window.innerWidth / 2, window.innerHeight * .1, 10, {
+engine.world = world
+const target = Bodies.circle(width * .9, height * .9, 10, {
     isStatic: true
 });
 let population;
 
-const obstacle = Bodies.rectangle(
-    window.innerWidth * .5, window.innerHeight * .5,
-    300, 10, {
-    isStatic: true
-});
+const walls = [
+    Bodies.rectangle(width * .3, height * .25, 10, 400, { isStatic: true }),
+    Bodies.rectangle(width * .6, height * .75, 10, 400, { isStatic: true }),
+    // walls
+    Bodies.rectangle(width / 2, 5, width, 10, { isStatic: true }),
+    Bodies.rectangle(width / 2, height - 5, width, 10, { isStatic: true }),
+    Bodies.rectangle(5, height / 2, 10, height, { isStatic: true }),
+    Bodies.rectangle(width - 5, height / 2, 10, height, { isStatic: true })
+]
+
+World.add(world, walls);
+
 
 function setup() {
     // create an engine
@@ -28,15 +49,15 @@ function setup() {
         element: document.body,
         engine: engine,
         options: {
-            width: window.innerWidth,
-            height: window.innerHeight,
+            width: width,
+            height: height,
             // wireframes: false
         }
     });
 
     population = new Population(engine.world);
 
-    World.add(engine.world, [target, obstacle]);
+    World.add(engine.world, [target]);
 
     Render.run(render);
 }
@@ -44,24 +65,25 @@ function setup() {
 function draw() {
     population.run();
     Engine.update(engine);
-    document.getElementById("p1").innerHTML = `cycles left: ${200 - population.cycle}`
+    document.getElementById("p1").innerHTML = `cycles left: ${GENOME_LENGTH - population.cycle}`
     document.getElementById("p2").innerHTML = `generation: ${population.generation}`
 }
 
 
-Events.on(engine, "collisionStart", function (event) {
+Events.on(engine, "collisionStart", (event) => {
     let pairs = event.pairs
     for (let i = 0; i < pairs.length; i++) {
         let bodyA = pairs[i].bodyA
         let bodyB = pairs[i].bodyB
-        if (bodyA === obstacle || bodyB === obstacle) {
-            if (bodyA != obstacle) {
-                World.remove(world, bodyA);
-            }
-            if (bodyB != obstacle) {
-                World.remove(world, bodyB);
-            }
+
+        const bodyAIndex = walls.indexOf(bodyA);
+        const bodyBIndex = walls.indexOf(bodyB);
+
+        if (bodyAIndex !== -1 && bodyBIndex === -1) {
+            World.remove(world, bodyB)
         }
+
+
     }
 })
 
