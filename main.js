@@ -2,6 +2,7 @@ const Engine = Matter.Engine,
     Render = Matter.Render,
     World = Matter.World,
     Bodies = Matter.Bodies,
+    Body = Matter.Body,
     Vector = Matter.Vector,
     Events = Matter.Events;
 
@@ -19,13 +20,14 @@ const target = Bodies.circle(width * .9, height * .9, 10, {
 let population;
 
 const walls = [
-    Bodies.rectangle(width * .3, height * .25, 10, 400, { isStatic: true }),
-    Bodies.rectangle(width * .6, height * .75, 10, 400, { isStatic: true }),
     // walls
     Bodies.rectangle(width / 2, 5, width, 10, { isStatic: true }),
     Bodies.rectangle(width / 2, height - 5, width, 10, { isStatic: true }),
     Bodies.rectangle(5, height / 2, 10, height, { isStatic: true }),
-    Bodies.rectangle(width - 5, height / 2, 10, height, { isStatic: true })
+    Bodies.rectangle(width - 5, height / 2, 10, height, { isStatic: true }),
+    // obstacles
+    Bodies.rectangle(width * .3, height * .25, 10, 400, { isStatic: true, }),
+    Bodies.rectangle(width * .6, height * .75, 10, 400, { isStatic: true }),
 ]
 
 World.add(world, walls);
@@ -43,7 +45,7 @@ function setup() {
         options: {
             width: width,
             height: height,
-            // wireframes: false
+            wireframes: false
         }
     });
 
@@ -68,14 +70,10 @@ Events.on(engine, "collisionStart", (event) => {
         let bodyA = pairs[i].bodyA
         let bodyB = pairs[i].bodyB
 
-        const bodyAIndex = walls.indexOf(bodyA);
-        const bodyBIndex = walls.indexOf(bodyB);
-
-        if (bodyAIndex !== -1 && bodyBIndex === -1) {
-            World.remove(world, bodyB)
+        World.remove(world, bodyB)
+        if (bodyA === target) {
+            bodyB.hitTarget = true;
         }
-
 
     }
 })
-
