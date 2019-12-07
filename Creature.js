@@ -2,7 +2,7 @@ class Creature extends Matter.Bodies.rectangle {
     constructor(world) {
         super(
             window.innerWidth * .1, window.innerHeight * .1,
-            10, 10, {
+            20, 10, {
             isSensor: false,
             mass: 5,
             collisionFilter: {
@@ -43,7 +43,6 @@ class Creature extends Matter.Bodies.rectangle {
 
         this.fitness = (1 / (this.finishTime * dist));
         this.fitness = Math.pow(this.fitness, 4);
-
     }
 
     run = () => {
@@ -54,7 +53,12 @@ class Creature extends Matter.Bodies.rectangle {
 
             if (this.alive) {
                 var temp = this.genome.sequence[this.geneCounter];
-                Object.assign(this.force, temp);
+                Body.applyForce(this, this.position, temp)
+
+                // set rotation
+                const h = Math.atan2(this.velocity.y, this.velocity.x)
+                Body.setAngle(this, h)
+
                 this.geneCounter++;
                 this.endLocation = this.position
             }
