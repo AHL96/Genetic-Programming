@@ -30,7 +30,7 @@ class Population {
     }
 
     run() {
-        if (this.cycle < GENERATION_LENGTH) {
+        if (this.creatures.some(c => c.alive) && this.cycle < GENERATION_LENGTH) {
             for (let c of this.creatures) {
                 c.run();
             }

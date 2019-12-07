@@ -2,7 +2,7 @@ class Genome {
     constructor() {
         this.mass;
         this.mutationRate = 0.01;
-        this.size = 500
+        this.size = GENERATION_LENGTH
         this.sequence = []
         for (let i = 0; i < this.size; i++) {
             this.sequence.push(this.randomGene());
@@ -31,8 +31,8 @@ class Genome {
 
     randomGene() {
         let vect = p5.Vector.random2D()
-        let x = vect.x / 500
-        let y = vect.y / 500
+        let x = vect.x / 100
+        let y = vect.y / 100
         return Vector.create(x, y);
     }
 

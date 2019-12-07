@@ -4,12 +4,14 @@ class Creature extends Matter.Bodies.rectangle {
             window.innerWidth * .1, window.innerHeight * .1,
             10, 10, {
             isSensor: false,
-            mass: 1,
+            mass: 5,
             collisionFilter: {
                 group: -1
             },
             render: {
-                fillStyle: "blue"
+                fillStyle: "black",
+                strokeStyle: "blue",
+                lineWidth: 3
             }
         }
         );
