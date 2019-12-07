@@ -8,7 +8,7 @@ const Engine = Matter.Engine,
 
 const width = window.innerWidth
 const height = window.innerHeight
-const GENOME_LENGTH = 500
+const GENERATION_LENGTH = 500
 
 const engine = Engine.create();
 engine.world.gravity.y = 0;
@@ -26,8 +26,8 @@ const walls = [
     Bodies.rectangle(5, height / 2, 10, height, { isStatic: true }),
     Bodies.rectangle(width - 5, height / 2, 10, height, { isStatic: true }),
     // obstacles
-    Bodies.rectangle(width * .3, height * .25, 10, 400, { isStatic: true, }),
-    Bodies.rectangle(width * .6, height * .75, 10, 400, { isStatic: true }),
+    Bodies.rectangle(width * .3, height * .25, 20, 400, { isStatic: true }),
+    Bodies.rectangle(width * .6, height * .75, 20, 400, { isStatic: true }),
 ]
 
 World.add(world, walls);
@@ -59,7 +59,7 @@ function setup() {
 function draw() {
     population.run();
     Engine.update(engine);
-    document.getElementById("p1").innerHTML = `cycles left: ${GENOME_LENGTH - population.cycle}`
+    document.getElementById("p1").innerHTML = `cycles left: ${GENERATION_LENGTH - population.cycle}`
     document.getElementById("p2").innerHTML = `generation: ${population.generation}`
 }
 
@@ -70,10 +70,17 @@ Events.on(engine, "collisionStart", (event) => {
         let bodyA = pairs[i].bodyA
         let bodyB = pairs[i].bodyB
 
-        World.remove(world, bodyB)
-        if (bodyA === target) {
-            bodyB.hitTarget = true;
+        if (bodyB.hasOwnProperty('alive') && bodyB.alive) {
+            bodyB.render.fillStyle = "red"
+            bodyB.alive = false
+
+            if (bodyA === target) {
+                bodyB.hitTarget = true;
+                bodyB.alive = false;
+                bodyB.render.fillStyle = "green"
+            }
         }
+
 
     }
 })

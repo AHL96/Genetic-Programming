@@ -7,6 +7,9 @@ class Creature extends Matter.Bodies.rectangle {
             mass: 1,
             collisionFilter: {
                 group: -1
+            },
+            render: {
+                fillStyle: "blue"
             }
         }
         );
@@ -17,9 +20,9 @@ class Creature extends Matter.Bodies.rectangle {
         this.alive = true;
         this.fitness = 0;
 
-        this.recordDist = Infinity;
         this.finishTime = 0;
         this.hitTarget = false;
+        this.endLocation = undefined
 
         if (world) {
             World.add(world, this);
@@ -28,29 +31,32 @@ class Creature extends Matter.Bodies.rectangle {
     }
 
     calcFitness = (target) => {
-        let d = Vector.sub(target.position, this.position);
-        d = Vector.magnitude(d)
+        let vect;
+        if (this.endLocation === undefined) {
+            vect = Vector.sub(target.position, this.position);
+        } else {
+            vect = Vector.sub(target.position, this.endLocation);
+        }
+        let dist = Vector.magnitude(vect)
 
-        if (this.recordDist < 1) this.recordDist = 1;
-
-        this.fitness = (1 / (this.finishTime * d));
-        // this.fitness = (1 / (this.finishTime * this.recordDist * d));
+        this.fitness = (1 / (this.finishTime * dist));
         this.fitness = Math.pow(this.fitness, 4);
+
     }
 
     run = () => {
-        let d = Vector.sub(target.position, this.position);
-        d = Vector.magnitude(d)
+        if (this.geneCounter < this.genome.size) {
+            if (!this.hitTarget) {
+                this.finishTime++;
+            }
 
-        if (d < this.recordDist) {
-            this.recordDist = d
+            if (this.alive) {
+                var temp = this.genome.sequence[this.geneCounter];
+                Object.assign(this.force, temp);
+                this.geneCounter++;
+                this.endLocation = this.position
+            }
         }
-        if (!this.hitTarget) {
-            this.finishTime++;
-        }
-        var temp = this.genome.sequence[this.geneCounter];
-        Object.assign(this.force, temp);
-        this.geneCounter++;
     }
 
 }

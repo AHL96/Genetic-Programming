@@ -1,7 +1,7 @@
 class Population {
     constructor(world) {
         this.creatures = [];
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 200; i++) {
             this.creatures.push(new Creature(world))
         }
         this.size = this.creatures.length;
@@ -30,7 +30,7 @@ class Population {
     }
 
     run() {
-        if (this.cycle < GENOME_LENGTH) {
+        if (this.cycle < GENERATION_LENGTH) {
             for (let c of this.creatures) {
                 c.run();
             }
