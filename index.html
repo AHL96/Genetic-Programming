@@ -13,16 +13,16 @@
             margin: 0;
         }
 
-        #p1 {
-            position: fixed;
+        ul{
             color: white;
-            left: 10%;
+            position: fixed;
+            width: 100%;
         }
 
-        #p2 {
-            position: fixed;
-            color: white;
-            left: 40%;
+        ul > li {
+            text-align: center;
+            display: inline-block;
+            width: 30%;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
@@ -36,8 +36,11 @@
 </head>
 
 <body>
-    <p id="p1"></p>
-    <p id="p2"></p>
+    <ul>
+        <li>cycles left: -1</li>
+        <li>generation: -1</li>
+        <li>average fitness: 0</li>
+    </ul>
 </body>
 
 </html>

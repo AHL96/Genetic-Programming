@@ -75,8 +75,8 @@ function setup() {
 function draw() {
     population.run();
     Engine.update(engine);
-    document.getElementById("p1").innerHTML = `cycles left: ${GENERATION_LENGTH - population.cycle}`
-    document.getElementById("p2").innerHTML = `generation: ${population.generation}`
+    document.getElementsByTagName("li")[0].innerHTML = `cycles left: ${GENERATION_LENGTH - population.cycle}`
+    document.getElementsByTagName("li")[1].innerHTML = `generation: ${population.generation}`
 }
 
 

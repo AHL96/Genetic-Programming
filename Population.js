@@ -36,7 +36,9 @@ class Population {
             }
             this.cycle++;
         } else {
-            this.calcFitness()
+            this.calcFitness();
+            let avgFit = population.creatures.map(c => c.fitness).reduce((prev, curr) => prev + curr) / population.creatures.length
+            document.getElementsByTagName("li")[2].innerHTML = `average fitness: ${avgFit.toExponential(2)}`
             this.selection();
             this.reproduction();
             this.cycle = 0;
