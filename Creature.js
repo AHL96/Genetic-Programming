@@ -33,16 +33,21 @@ class Creature extends Matter.Bodies.rectangle {
     }
 
     calcFitness = (target) => {
+        let denominator = 1;
         let vect;
         if (this.endLocation === undefined) {
             vect = Vector.sub(target.position, this.position);
         } else {
             vect = Vector.sub(target.position, this.endLocation);
         }
-        let dist = Vector.magnitude(vect)
+        denominator *= Vector.magnitude(vect)
+        if (this.hitTarget) {
+            denominator *= this.finishTime
+        } else {
+            denominator /= this.finishTime
+        }
 
-        this.fitness = (1 / (this.finishTime * dist));
-        this.fitness = Math.pow(this.fitness, 4);
+        this.fitness = Math.pow((1 / denominator), 2);
     }
 
     run = () => {
