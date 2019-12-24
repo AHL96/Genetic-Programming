@@ -1,10 +1,12 @@
 const Engine = Matter.Engine,
     Render = Matter.Render,
+    Runner = Matter.Runner,
     World = Matter.World,
     Bodies = Matter.Bodies,
     Body = Matter.Body,
     Vector = Matter.Vector,
-    Events = Matter.Events;
+    Events = Matter.Events,
+    Common = Matter.Common;
 
 const width = window.innerWidth
 const height = window.innerHeight
@@ -22,7 +24,8 @@ const engine = Engine.create({
     world: world
 });
 
-let population;
+const population = new Population(engine.world);
+
 const wallOptions = {
     isStatic: true,
     render: {
@@ -31,8 +34,6 @@ const wallOptions = {
         lineWidth: 3
     }
 }
-
-const target = Bodies.circle(width * .9, height * .9, 10, wallOptions);
 
 const walls = [
     // obstacles
@@ -45,46 +46,54 @@ const walls = [
     Bodies.rectangle(width - 5, height / 2, 10, height, wallOptions),
 ]
 
+const target = Bodies.circle(width * .9, height * .9, 10, wallOptions);
 
 World.add(world, walls);
+World.add(engine.world, [target]);
 
+// create a renderer
+const render = Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+        width: width,
+        height: height,
+        wireframes: false,
+        showAngleIndicator: true
+    }
+});
 
-function setup() {
-    // create an engine
-    noCanvas();
-    engine.world.gravity.y = 0;
+Render.run(render);
 
-    // create a renderer
-    const render = Render.create({
-        element: document.body,
-        engine: engine,
-        options: {
-            width: width,
-            height: height,
-            wireframes: false
-        }
-    });
+const runner = Runner.create();
+Runner.run(runner, engine);
 
-    population = new Population(engine.world);
-
-    World.add(engine.world, [target]);
-
-    Render.run(render);
-}
-
-function draw() {
+Events.on(engine, "beforeUpdate", (event) => {
     population.run();
-    Engine.update(engine);
+})
+
+Events.on(engine, "afterUpdate", (event) => {
     document.getElementsByTagName("li")[0].innerHTML = `cycles left: ${GENERATION_LENGTH - population.cycle}`
     document.getElementsByTagName("li")[1].innerHTML = `generation: ${population.generation}`
-}
-
+})
 
 Events.on(engine, "collisionStart", (event) => {
+
     let pairs = event.pairs
     for (let i = 0; i < pairs.length; i++) {
         let bodyA = pairs[i].bodyA
         let bodyB = pairs[i].bodyB
+
+        if (bodyA.hasOwnProperty('alive') && bodyA.alive) {
+            bodyA.render.strokeStyle = "red"
+            bodyA.alive = false
+
+            if (bodyB === target) {
+                bodyA.hitTarget = true;
+                bodyA.alive = false;
+                bodyA.render.strokeStyle = "green"
+            }
+        }
 
         if (bodyB.hasOwnProperty('alive') && bodyB.alive) {
             bodyB.render.strokeStyle = "red"

@@ -1,7 +1,7 @@
 class Genome {
     constructor() {
         this.mass;
-        this.mutationRate = 0.01;
+        this.mutationRate = 0.015;
         this.size = GENERATION_LENGTH
         this.sequence = []
         for (let i = 0; i < this.size; i++) {
@@ -30,9 +30,9 @@ class Genome {
     }
 
     randomGene() {
-        let vect = p5.Vector.random2D()
-        let x = vect.x / 100
-        let y = vect.y / 100
+        let angle = Math.random() * (2 * Math.PI)
+        let x = Math.cos(angle) / 100
+        let y = Math.sin(angle) / 100
         return Vector.create(x, y);
     }
 

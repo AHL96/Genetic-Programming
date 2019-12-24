@@ -20,7 +20,8 @@ class Population {
         this.matingPool = [];
         for (let i = 0; i < this.creatures.length; i++) {
             let creature = this.creatures[i];
-            let fitnessNormal = map(creature.fitness, 0, this.getMaxFitness(), 0, 1);
+            const maxfitness = this.getMaxFitness()
+            const fitnessNormal = creature.fitness / maxfitness;
             let n = Math.floor(fitnessNormal * 100);
             for (let j = 0; j < n; j++) {
                 this.matingPool.push(creature);
@@ -48,8 +49,8 @@ class Population {
 
     reproduction() {
         for (var i = 0; i < this.size; i++) {
-            let a = Math.floor(random(0, this.matingPool.length));
-            let b = Math.floor(random(0, this.matingPool.length));
+            let a = Math.floor(Common.random(0, this.matingPool.length));
+            let b = Math.floor(Common.random(0, this.matingPool.length));
 
             let parentA = this.matingPool[a].genome;
             let parentB = this.matingPool[b].genome;
